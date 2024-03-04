@@ -54,7 +54,7 @@ public class OrderGeneratorTest {
                 "Order ID: HOLY1802202453C3\n" + //
                 "Tanggal Pemesanan: 18/02/2024\n" + //
                 "Lokasi Pengiriman: S\n" + //
-                "Biaya Ongkos Kirim: Rp40,000\n" + // Change back to . (dot) later
+                "Biaya Ongkos Kirim: Rp40.000\n" + //
                 "";
         assertEquals(solution, OrderGenerator.generateBill("HOLY1802202453C3", "s"));
     }

@@ -3,15 +3,11 @@ package assignments.assignment1;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in);
-
-    /*
-     * Anda boleh membuat method baru sesuai kebutuhan Anda Namun, Anda tidak boleh menghapus
-     * ataupun memodifikasi return type method yang sudah ada.
-     */
 
     /*
      * Method ini untuk menampilkan menu
@@ -31,6 +27,9 @@ public class OrderGenerator {
         System.out.println("3. Keluar");
     }
 
+    /*
+     * Method ini untuk mengambil nama restoran dari input user
+     */
     public static String getRestaurantName() throws Exception {
         System.out.print("Nama Restoran: ");
         String userInput = input.nextLine();
@@ -42,6 +41,9 @@ public class OrderGenerator {
         return userInput;
     }
 
+    /*
+     * Method ini untuk mengambil tanggal pesan dari input user
+     */
     public static String getOrderDate() throws Exception {
         System.out.print("Tanggal Pemesanan: ");
         String userInput = input.nextLine();
@@ -54,6 +56,9 @@ public class OrderGenerator {
         }
     }
 
+    /*
+     * Method ini untuk mengambil nomor telepon dari input user
+     */
     public static String getPhoneNumber() throws Exception {
         System.out.print("No. Telepon: ");
         String userInput = input.nextLine();
@@ -65,6 +70,9 @@ public class OrderGenerator {
         return userInput;
     }
 
+    /*
+     * Method ini untuk mengambil Order ID dari input user
+     */
     public static String getOrderID() throws Exception {
         System.out.print("Order ID: ");
         String userInput = input.nextLine();
@@ -80,6 +88,9 @@ public class OrderGenerator {
         return userInput;
     }
 
+    /*
+     * Method ini untuk mengambil lokasi pengiriman dari input user
+     */
     public static String getLocation() throws Exception {
         System.out.print("Lokasi Pengiriman: ");
         String userInput = input.nextLine();
@@ -91,12 +102,17 @@ public class OrderGenerator {
         return userInput;
     }
 
+    /*
+     * Method ini digunakan untuk menyusun Order ID dari input-input user
+     */
     public static void performGenerateOrderID() {
         String restaurantName;
         String orderDate;
         String phoneNumber;
 
         while (true) {
+            System.out.println();
+
             try {
                 restaurantName = getRestaurantName();
                 orderDate = getOrderDate();
@@ -113,8 +129,6 @@ public class OrderGenerator {
 
     /*
      * Method ini digunakan untuk membuat ID dari nama restoran, tanggal order, dan nomor telepon
-     * 
-     * @return String Order ID dengan format sesuai pada dokumen soal
      */
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
         String restaurantID = generateRestaurantID(namaRestoran);
@@ -125,11 +139,16 @@ public class OrderGenerator {
         return String.format("%s%s%s%s", restaurantID, orderDateID, phoneNumberID, checksumID);
     }
 
+    /*
+     * Method ini digunakan untuk menyusun Order Bill dari input-input user
+     */
     public static void performGenerateBill() {
         String orderID;
         String location;
 
         while (true) {
+            System.out.println();
+
             try {
                 orderID = getOrderID();
                 location = getLocation();
@@ -140,27 +159,30 @@ public class OrderGenerator {
         }
 
         String output = generateBill(orderID, location);
-        System.out.println(output);
+        System.out.printf("\n%s\n", output);
     }
 
 
     /*
      * Method ini digunakan untuk membuat bill dari order id dan lokasi
-     * 
-     * @return String Bill dengan format sesuai di bawah: Bill: Order ID: [Order ID] Tanggal
-     * Pemesanan: [Tanggal Pemesanan] Lokasi Pengiriman: [Kode Lokasi] Biaya Ongkos Kirim: [Total
-     * Ongkos Kirim]
      */
     public static String generateBill(String OrderID, String lokasi) {
         LocalDate date =
                 LocalDate.parse(OrderID.substring(4, 12), DateTimeFormatter.ofPattern("ddMMyyy"));
 
         return String.format(
+                Locale.GERMAN,
                 "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nLokasi Pengiriman: %s\nBiaya Ongkos Kirim: Rp%,d\n",
-                OrderID, date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                lokasi.toUpperCase(), determineDeliveryCost(lokasi));
+                OrderID,
+                date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                lokasi.toUpperCase(),
+                determineDeliveryCost(lokasi));
     }
 
+    /*
+     * Method ini digunakan untuk mententukan harga pengiriman sesuai lokasi
+     * (return null jika lokasi tidak ada yang sesuai)
+     */
     public static Integer determineDeliveryCost(String location) {
         switch (location.toUpperCase()) {
             case "P":
@@ -178,6 +200,9 @@ public class OrderGenerator {
         }
     }
 
+    /*
+     * Method ini digunakan untuk mengkonversi char ke int sesuai dengan Code39 Encoding
+     */
     public static int convertCode39FromChar(char character) {
         switch (character) {
             case '0':
@@ -257,6 +282,9 @@ public class OrderGenerator {
         }
     }
 
+    /*
+     * Method ini digunakan untuk mengkonversi int ke char sesuai dengan Code39 Encoding
+     */
     public static char convertCode39FromInt(int code) {
         switch (code) {
             case 0:
@@ -336,11 +364,17 @@ public class OrderGenerator {
         }
     }
 
+    /*
+     * Method untuk membuat kode restoran menggunakkan nama restoran
+     */
     public static String generateRestaurantID(String restaurant) {
         String restaurantCode = restaurant.replaceAll(" ", "").substring(0, 4);
         return restaurantCode.toUpperCase();
     }
 
+    /*
+     * Method untuk membuat kode tanggal pesan menggunakkan tanggal kapan order dipesan
+     */
     public static String generateOrderDateID(String orderDate) {
         LocalDate date = LocalDate.parse(orderDate, DateTimeFormatter.ofPattern("dd/MM/yyy"));
 
@@ -351,6 +385,9 @@ public class OrderGenerator {
         return String.format("%d%02d%d", day, month, year);
     }
 
+    /*
+     * Method untuk membuat kode nomor telepon menggunakkan nomor telepon user
+     */
     public static String generatePhoneNumberID(String phoneNumber) {
         int result = 0;
 
@@ -362,6 +399,9 @@ public class OrderGenerator {
         return String.format("%02d", (result % 100));
     }
 
+    /*
+     * Method untuk membuat checksum dengan nama restoran, tanggal pesan, dan nomor telepon user
+     */
     public static String generateChecksumID(String prevID) {
         int oddValue = 0;
         int evenValue = 0;
@@ -380,6 +420,9 @@ public class OrderGenerator {
         return String.format("%c%c", checksum1, checksum2);
     }
 
+    /*
+     * Main method
+     */
     public static void main(String[] args) {
         while (true) {
             showMenu();
