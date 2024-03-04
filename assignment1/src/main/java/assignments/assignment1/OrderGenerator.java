@@ -36,7 +36,7 @@ public class OrderGenerator {
         String userInput = input.nextLine();
 
         if (userInput.length() < 4) {
-            throw new Exception("Nama restoran minimal 4 karakter");
+            throw new Exception("Nama Restoran tidak valid!");
         }
 
         return userInput;
@@ -108,7 +108,7 @@ public class OrderGenerator {
         }
 
         String output = generateOrderID(restaurantName, orderDate, phoneNumber);
-        System.out.println(output);
+        System.out.printf("Order ID %s diterima!\n", output);
     }
 
     /*
@@ -116,16 +116,13 @@ public class OrderGenerator {
      * 
      * @return String Order ID dengan format sesuai pada dokumen soal
      */
-    public static String generateOrderID(String namaRestoran, String tanggalOrder,
-            String noTelepon) {
+    public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
         String restaurantID = generateRestaurantID(namaRestoran);
         String orderDateID = generateOrderDateID(tanggalOrder);
         String phoneNumberID = generatePhoneNumberID(noTelepon);
-        String checksumID = generateChecksumID(
-                String.format("%s%s%s", restaurantID, orderDateID, phoneNumberID));
+        String checksumID = generateChecksumID(String.format("%s%s%s", restaurantID, orderDateID, phoneNumberID));
 
-        return String.format("Order ID %s%s%s%s diterima!", restaurantID, orderDateID,
-                phoneNumberID, checksumID);
+        return String.format("%s%s%s%s", restaurantID, orderDateID, phoneNumberID, checksumID);
     }
 
     public static void performGenerateBill() {
