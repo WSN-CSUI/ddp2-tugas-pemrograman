@@ -97,9 +97,50 @@ public class MainMenu {
     }
 
     public static User getUser(String nama, String nomorTelepon) {
-        // TODO: Implementasi method untuk mendapat user dari userList
+        for (User user : userList) {
+            if (user.getNama().equals(nama) && user.getNomorTelepon().equals(nomorTelepon)) {
+                return user;
+            }
+        }
         return null;
     }
+
+    public static Restaurant getRestaurant(String nama) {
+        for (Restaurant resto : restoList) {
+            if (resto.getNama().equalsIgnoreCase(nama)) {
+                return resto;
+            }
+        }
+        return null;
+    }
+
+    public static Order getOrder(User user, String orderID) {
+        for (Order order : user.getOrderHistory()) {
+            if (order.getOrderID().equalsIgnoreCase(orderID)) {
+                return order;
+            }
+        }
+        return null;
+    }
+
+    public static Menu getMenu(Order order, String nama) {
+        for (Menu menu : order.getItems()) {
+            if (menu.getNamaMakanan().equals(nama)) {
+                return menu;
+            }
+        }
+        return null;
+    }
+
+    public static Menu getMenu(Restaurant restaurant, String nama) {
+        for (Menu menu : restaurant.getMenu()) {
+            if (menu.getNamaMakanan().equals(nama)) {
+                return menu;
+            }
+        }
+        return null;
+    }
+
 
     public static void handleBuatPesanan(User user) {
         // TODO: Implementasi method untuk handle ketika customer membuat pesanan
