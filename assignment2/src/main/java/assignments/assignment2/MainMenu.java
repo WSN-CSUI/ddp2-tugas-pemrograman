@@ -143,7 +143,58 @@ public class MainMenu {
 
 
     public static void handleBuatPesanan(User user) {
-        // TODO: Implementasi method untuk handle ketika customer membuat pesanan
+        System.out.print("\n--------- Buat Pesanan ---------\n");
+
+        loopBuatPesanan: while (true) {
+            System.out.print("Nama Restoran: ");
+            String restoName = input.nextLine();
+
+            Restaurant currResto = getRestaurant(restoName);
+            if (currResto == null) {
+                System.out.println("Restoran tidak terdafter pada sistem.\n");
+                continue;
+            }
+
+            System.out.print("Tanggal Pemesanan (DD/MM/YYYY): ");
+            String orderDate = input.nextLine();
+
+            try {
+                LocalDate.parse(orderDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (DateTimeParseException err) {
+                System.out.println("Masukkan tanggal yang sesuai format (DD/MM/YYYY)!\n");
+                continue;
+            }
+
+            System.out.print("Jumlah pesanan: ");
+            int orderAmount = input.nextInt();
+            input.nextLine();
+
+            System.out.println("Order: ");
+            ArrayList<String> menuNames = new ArrayList<>();
+            for (int i = 0; i < orderAmount; i++) {
+                String menuName = input.nextLine();
+                menuNames.add(menuName);
+            }
+
+            ArrayList<Menu> menuItems = new ArrayList<>();
+            for (String menuName : menuNames) {
+                Menu currMenu = getMenu(currResto, menuName);
+                if (currMenu == null) {
+                    System.out.println("Mohon memesan menu yang tersedia di Restoran!\n");
+                    continue loopBuatPesanan;
+                }
+                menuItems.add(currMenu);
+            }
+
+            String orderID =
+                    OrderGenerator.generateOrderID(restoName, orderDate, user.getNomorTelepon());
+            int deliveryCost = OrderGenerator.determineDeliveryCost(user.getLokasi());
+            Order newOrder = new Order(orderID, orderDate, deliveryCost, currResto, menuItems);
+
+            user.addOrderHistory(newOrder);
+            System.out.printf("Pesanan dengan ID %s diterima!\n\n", orderID);
+            break;
+        }
     }
 
     public static void handleCetakBill(User user) {
