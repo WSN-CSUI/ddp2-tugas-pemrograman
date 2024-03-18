@@ -21,14 +21,20 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat bill dari order id dan lokasi
      */
-    public static String generateBill(String OrderID, String lokasi) {
-        LocalDate date =
-                LocalDate.parse(OrderID.substring(4, 12), DateTimeFormatter.ofPattern("ddMMyyy"));
+    public static String generateBill(User user, Order order) {
+        StringBuilder orderedMenu = new StringBuilder();
+        double orderedMenuPrice = 0;
 
-        return String.format(Locale.GERMAN,
-                "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nLokasi Pengiriman: %s\nBiaya Ongkos Kirim: Rp%,d\n",
-                OrderID, date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                lokasi.toUpperCase(), determineDeliveryCost(lokasi));
+        for (Menu menu : order.getItems()) {
+            orderedMenu.append(String.format("- %s\n", menu));
+            orderedMenuPrice += menu.getHarga();
+        }
+
+        return String.format(
+                "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nRestaurant: %s\nLokasi Pengiriman: %s\nStatus Pengiriman: %s\nPesanan:\n %sBiaya Ongkos Kirim: Rp%d\nTotal Biaya: Rp%.0f\n",
+                order.getOrderID(), order.getTanggalPemesanan(), order.getRestaurant().getNama(),
+                user.getLokasi(), order.getOrderFinished(), orderedMenu,
+                order.getBiayaOngkosKirim(), orderedMenuPrice + order.getBiayaOngkosKirim());
     }
 
     /*
