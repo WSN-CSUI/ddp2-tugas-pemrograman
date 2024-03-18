@@ -246,7 +246,32 @@ public class MainMenu {
     }
 
     public static void handleUpdateStatusPesanan(User user) {
-        // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
+        System.out.print("\n--------- Update Status Pesanan ---------\n");
+
+        loopUpdateStatusPesanan: while (true) {
+            System.out.print("Order ID: ");
+            String orderID = input.nextLine();
+
+            Order currOrder = getOrder(user, orderID);
+            if (currOrder == null) {
+                System.out.println("Order ID tidak dapat ditemukan.\n");
+                continue;
+            }
+
+            System.out.print("Status: ");
+            boolean status = input.nextLine().equalsIgnoreCase("selesai");
+
+            if (currOrder.isOrderFinished() == status) {
+                System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!\n",
+                        currOrder.getOrderID());
+            } else {
+                currOrder.setOrderFinished(status);
+                System.out.printf("Status pesanan dengan ID %s berhasil diupdate!\n",
+                        currOrder.getOrderID());
+            }
+
+            break;
+        }
     }
 
     public static void handleTambahRestoran(User user) {
