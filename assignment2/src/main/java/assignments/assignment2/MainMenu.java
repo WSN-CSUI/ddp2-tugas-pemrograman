@@ -159,7 +159,57 @@ public class MainMenu {
     }
 
     public static void handleTambahRestoran(User user) {
-        // TODO: Implementasi method untuk handle ketika admin ingin tambah restoran
+        System.out.print("\n--------- Tambah Restoran ---------\n");
+
+        loopTambahRestoran: while (true) {
+            System.out.print("Nama: ");
+            String restoName = input.nextLine();
+
+            if (restoName.length() < 4) {
+                System.out.println("Nama Restoran tidak valid!\n");
+                continue;
+            }
+
+            Restaurant currResto = getRestaurant(restoName);
+            if (currResto != null) {
+                System.out.printf(
+                        "Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!\n\n",
+                        restoName);
+                continue;
+            } else {
+                currResto = new Restaurant(restoName);
+            }
+
+            System.out.print("Jumlah Makanan: ");
+            int menuAmount = input.nextInt();
+            input.nextLine();
+
+            ArrayList<String[]> menuItems = new ArrayList<>();
+            for (int i = 0; i < menuAmount; i++) {
+                String[] menuInput = input.nextLine().split(" ");
+                String menuName =
+                        String.join(" ", Arrays.copyOfRange(menuInput, 0, menuInput.length - 1));
+                String menuPrice = menuInput[menuInput.length - 1];
+                String[] menuItem = new String[] {menuName, menuPrice};
+                menuItems.add(menuItem);
+            }
+
+            for (String[] menuItem : menuItems) {
+                try {
+                    String menuName = menuItem[0];
+                    double menuPrice = Double.parseDouble(menuItem[1]);
+                    Menu currMenu = new Menu(menuName, menuPrice);
+                    currResto.addMenu(currMenu);
+                } catch (Exception err) {
+                    System.out.println("Harga menu harus bilangan bulat!\n");
+                    continue loopTambahRestoran;
+                }
+            }
+
+            restoList.add(currResto);
+            System.out.printf("Restaurant %s berhasil terdaftar.\n", restoName);
+            break;
+        }
     }
 
     public static void handleHapusRestoran(User user) {
