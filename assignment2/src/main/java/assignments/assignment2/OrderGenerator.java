@@ -31,7 +31,7 @@ public class OrderGenerator {
         }
 
         return String.format(
-                "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nRestaurant: %s\nLokasi Pengiriman: %s\nStatus Pengiriman: %s\nPesanan:\n %sBiaya Ongkos Kirim: Rp%d\nTotal Biaya: Rp%.0f\n",
+                "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nRestaurant: %s\nLokasi Pengiriman: %s\nStatus Pengiriman: %s\nPesanan:\n%sBiaya Ongkos Kirim: Rp%d\nTotal Biaya: Rp%.0f",
                 order.getOrderID(), order.getTanggalPemesanan(), order.getRestaurant().getNama(),
                 user.getLokasi(), order.getOrderFinished(), orderedMenu,
                 order.getBiayaOngkosKirim(), orderedMenuPrice + order.getBiayaOngkosKirim());

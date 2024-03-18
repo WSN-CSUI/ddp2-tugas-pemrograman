@@ -194,7 +194,7 @@ public class MainMenu {
             Order newOrder = new Order(orderID, orderDate, deliveryCost, currResto, menuItems);
 
             user.addOrderHistory(newOrder);
-            System.out.printf("Pesanan dengan ID %s diterima!\n\n", orderID);
+            System.out.printf("Pesanan dengan ID %s diterima!\n", orderID);
             break;
         }
     }
@@ -217,6 +217,21 @@ public class MainMenu {
         }
     }
 
+    public static void sortMenus(ArrayList<Menu> menus) {
+        for (int i = 0; i < menus.size() - 1; i++) {
+            for (int j = 0; j < menus.size() - i - 1; j++) {
+                Menu menu1 = menus.get(j);
+                Menu menu2 = menus.get(j + 1);
+                int priceComparison = Double.compare(menu1.getHarga(), menu2.getHarga());
+                if (priceComparison > 0 || (priceComparison == 0
+                        && menu1.getNamaMakanan().compareTo(menu2.getNamaMakanan()) > 0)) {
+                    menus.set(j, menu2);
+                    menus.set(j + 1, menu1);
+                }
+            }
+        }
+    }
+
     public static void handleLihatMenu(User user) {
         System.out.print("\n--------- Lihat Menu ---------\n");
 
@@ -230,19 +245,12 @@ public class MainMenu {
                 continue;
             }
 
-            currResto.getMenu().sort((menu1, menu2) -> {
-                int priceComparison = Double.compare(menu1.getHarga(), menu2.getHarga());
-                if (priceComparison != 0) {
-                    return priceComparison;
-                } else {
-                    return menu1.getNamaMakanan().compareTo(menu2.getNamaMakanan());
-                }
-            });
+            sortMenus(currResto.getMenu());
 
             System.out.println("Menu:");
-            for (int i = 1; i <= currResto.getMenu().size(); i++) {
-                Menu currMenu = currResto.getMenu().get(i - 1);
-                System.out.printf("%d. %s\n", i, currMenu);
+            for (int i = 0; i < currResto.getMenu().size(); i++) {
+                Menu currMenu = currResto.getMenu().get(i);
+                System.out.printf("%d. %s\n", i + 1, currMenu);
             }
 
             break;
