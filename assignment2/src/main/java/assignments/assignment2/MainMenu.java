@@ -198,7 +198,21 @@ public class MainMenu {
     }
 
     public static void handleCetakBill(User user) {
-        // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
+        System.out.print("\n--------- Cetak Bill ---------\n");
+
+        loopCetakBill: while (true) {
+            System.out.print("Masukkan Order ID: ");
+            String orderID = input.nextLine();
+
+            Order currOrder = getOrder(user, orderID);
+            if (currOrder == null) {
+                System.out.println("Order ID tidak dapat ditemukan.");
+                continue;
+            }
+
+            System.out.println(OrderGenerator.generateBill(user, currOrder));
+            break;
+        }
     }
 
     public static void handleLihatMenu(User user) {
