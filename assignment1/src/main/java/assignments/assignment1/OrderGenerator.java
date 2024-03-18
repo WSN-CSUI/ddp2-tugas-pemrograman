@@ -16,12 +16,14 @@ public class OrderGenerator {
         System.out.println(">>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
         System.out.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
+        System.out.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
         System.out.println("||| | |/ ._>| . \\/ ._>| _>/ . \\/ . \\/ . |||");
         System.out.println("|||___/\\___.|  _/\\___.|_| \\___/\\___/\\___|||");
         System.out.println("||          |_|                          ||");
         System.out.println(">>=======================================<<");
         System.out.println();
         System.out.println("Pilih menu:");
+        System.out.println("1. Generate Order ID");
         System.out.println("1. Generate Order ID");
         System.out.println("2. Generate Bill");
         System.out.println("3. Keluar");
@@ -130,11 +132,13 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat ID dari nama restoran, tanggal order, dan nomor telepon
      */
-    public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
+    public static String generateOrderID(String namaRestoran, String tanggalOrder,
+            String noTelepon) {
         String restaurantID = generateRestaurantID(namaRestoran);
         String orderDateID = generateOrderDateID(tanggalOrder);
         String phoneNumberID = generatePhoneNumberID(noTelepon);
-        String checksumID = generateChecksumID(String.format("%s%s%s", restaurantID, orderDateID, phoneNumberID));
+        String checksumID = generateChecksumID(
+                String.format("%s%s%s", restaurantID, orderDateID, phoneNumberID));
 
         return String.format("%s%s%s%s", restaurantID, orderDateID, phoneNumberID, checksumID);
     }
@@ -170,18 +174,15 @@ public class OrderGenerator {
         LocalDate date =
                 LocalDate.parse(OrderID.substring(4, 12), DateTimeFormatter.ofPattern("ddMMyyy"));
 
-        return String.format(
-                Locale.GERMAN,
+        return String.format(Locale.GERMAN,
                 "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nLokasi Pengiriman: %s\nBiaya Ongkos Kirim: Rp%,d\n",
-                OrderID,
-                date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                lokasi.toUpperCase(),
-                determineDeliveryCost(lokasi));
+                OrderID, date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                lokasi.toUpperCase(), determineDeliveryCost(lokasi));
     }
 
     /*
-     * Method ini digunakan untuk mententukan harga pengiriman sesuai lokasi
-     * (return null jika lokasi tidak ada yang sesuai)
+     * Method ini digunakan untuk mententukan harga pengiriman sesuai lokasi (return null jika
+     * lokasi tidak ada yang sesuai)
      */
     public static Integer determineDeliveryCost(String location) {
         switch (location.toUpperCase()) {
