@@ -55,7 +55,6 @@ public class MainMenu {
         System.out.println("\nTerima kasih telah menggunakan DepeFood ^___^");
     }
 
-
     public static void runAdminProgram(User currUser) {
         while (true) {
             menuAdmin();
@@ -141,7 +140,6 @@ public class MainMenu {
         return null;
     }
 
-
     public static void handleBuatPesanan(User user) {
         System.out.print("\n--------- Buat Pesanan ---------\n");
 
@@ -216,7 +214,35 @@ public class MainMenu {
     }
 
     public static void handleLihatMenu(User user) {
-        // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
+        System.out.print("\n--------- Lihat Menu ---------\n");
+
+        loopLihatMenu: while (true) {
+            System.out.print("Nama Restoran: ");
+            String restoName = input.nextLine();
+
+            Restaurant currResto = getRestaurant(restoName);
+            if (currResto == null) {
+                System.out.println("Restoran tidak terdaftar pada sistem.");
+                continue;
+            }
+
+            currResto.getMenu().sort((menu1, menu2) -> {
+                int priceComparison = Double.compare(menu1.getHarga(), menu2.getHarga());
+                if (priceComparison != 0) {
+                    return priceComparison;
+                } else {
+                    return menu1.getNamaMakanan().compareTo(menu2.getNamaMakanan());
+                }
+            });
+
+            System.out.println("Menu:");
+            for (int i = 1; i <= currResto.getMenu().size(); i++) {
+                Menu currMenu = currResto.getMenu().get(i - 1);
+                System.out.printf("%d. %s\n", i, currMenu);
+            }
+
+            break;
+        }
     }
 
     public static void handleUpdateStatusPesanan(User user) {
