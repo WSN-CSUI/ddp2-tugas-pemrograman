@@ -5,67 +5,95 @@ import java.util.Scanner;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);
-    private static ArrayList<Restaurant> restoList;
-    private static ArrayList<User> userList;
+    private static final ArrayList<Restaurant> restoList = new ArrayList<>();
+    private static final ArrayList<User> userList = new ArrayList<>();
 
     public static void main(String[] args) {
-        boolean programRunning = true;
-        while (programRunning) {
-            printHeader();
+        initUser();
+        printHeader();
+
+        while (true) {
             startMenu();
+
             int command = input.nextInt();
             input.nextLine();
 
             if (command == 1) {
-                System.out.println("\nSilakan Login:");
+                System.out.println("\nSilahkan Login");
+
                 System.out.print("Nama: ");
                 String nama = input.nextLine();
+
                 System.out.print("Nomor Telepon: ");
                 String noTelp = input.nextLine();
 
-                // TODO: Validasi input login
-
-                User userLoggedIn; // TODO: lengkapi
-                boolean isLoggedIn = true;
-
-                if (userLoggedIn.role == "Customer") {
-                    while (isLoggedIn) {
-                        menuCustomer();
-                        int commandCust = input.nextInt();
-                        input.nextLine();
-
-                        switch (commandCust) {
-                            case 1 -> handleBuatPesanan();
-                            case 2 -> handleCetakBill();
-                            case 3 -> handleLihatMenu();
-                            case 4 -> handleUpdateStatusPesanan();
-                            case 5 -> isLoggedIn = false;
-                            default -> System.out
-                                    .println("Perintah tidak diketahui, silakan coba kembali");
-                        }
-                    }
+                User userLoggedIn = getUser(nama, noTelp);
+                if (userLoggedIn == null) {
+                    System.out.println("Pengguna dengan data tersebut tidak ditemukan!\n");
+                    continue;
                 } else {
-                    while (isLoggedIn) {
-                        menuAdmin();
-                        int commandAdmin = input.nextInt();
-                        input.nextLine();
-
-                        switch (commandAdmin) {
-                            case 1 -> handleTambahRestoran();
-                            case 2 -> handleHapusRestoran();
-                            case 3 -> isLoggedIn = false;
-                            default -> System.out
-                                    .println("Perintah tidak diketahui, silakan coba kembali");
-                        }
-                    }
+                    System.out.printf("Selamat Datang %s!\n", userLoggedIn.getNama());
                 }
+
+                switch (userLoggedIn.getRole().toLowerCase()) {
+                    case "admin":
+                        runAdminProgram(userLoggedIn);
+                        break;
+                    case "customer":
+                        runCustomerProgram(userLoggedIn);
+                        break;
+                }
+
             } else if (command == 2) {
-                programRunning = false;
+                break;
+
             } else {
                 System.out.println("Perintah tidak diketahui, silakan periksa kembali.");
             }
         }
+
         System.out.println("\nTerima kasih telah menggunakan DepeFood ^___^");
+    }
+
+
+    public static void runAdminProgram(User currUser) {
+        while (true) {
+            menuAdmin();
+            int command = input.nextInt();
+            input.nextLine();
+
+            if (command == 1) {
+                handleTambahRestoran(currUser);
+            } else if (command == 2) {
+                handleHapusRestoran(currUser);
+            } else if (command == 3) {
+                break;
+            } else {
+                System.out.println("Perintah tidak diketahui, silakan coba kembali");
+            }
+        }
+    }
+
+    public static void runCustomerProgram(User currUser) {
+        while (true) {
+            menuCustomer();
+            int command = input.nextInt();
+            input.nextLine();
+
+            if (command == 1) {
+                handleBuatPesanan(currUser);
+            } else if (command == 2) {
+                handleCetakBill(currUser);
+            } else if (command == 3) {
+                handleLihatMenu(currUser);
+            } else if (command == 4) {
+                handleUpdateStatusPesanan(currUser);
+            } else if (command == 5) {
+                return;
+            } else {
+                System.out.println("Perintah tidak diketahui, silakan coba kembali");
+            }
+        }
     }
 
     public static User getUser(String nama, String nomorTelepon) {
@@ -73,32 +101,31 @@ public class MainMenu {
         return null;
     }
 
-    public static void handleBuatPesanan() {
+    public static void handleBuatPesanan(User user) {
         // TODO: Implementasi method untuk handle ketika customer membuat pesanan
     }
 
-    public static void handleCetakBill() {
+    public static void handleCetakBill(User user) {
         // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
     }
 
-    public static void handleLihatMenu() {
+    public static void handleLihatMenu(User user) {
         // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
     }
 
-    public static void handleUpdateStatusPesanan() {
+    public static void handleUpdateStatusPesanan(User user) {
         // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
     }
 
-    public static void handleTambahRestoran() {
+    public static void handleTambahRestoran(User user) {
         // TODO: Implementasi method untuk handle ketika admin ingin tambah restoran
     }
 
-    public static void handleHapusRestoran() {
+    public static void handleHapusRestoran(User user) {
         // TODO: Implementasi method untuk handle ketika admin ingin tambah restoran
     }
 
     public static void initUser() {
-        userList = new ArrayList<User>();
         userList.add(new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer"));
         userList.add(
                 new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer"));
