@@ -213,7 +213,22 @@ public class MainMenu {
     }
 
     public static void handleHapusRestoran(User user) {
-        // TODO: Implementasi method untuk handle ketika admin ingin tambah restoran
+        System.out.print("\n--------- Hapus Restoran ---------\n");
+
+        loopHapusRestoran: while (true) {
+            System.out.print("Nama Restoran: ");
+            String restoName = input.nextLine();
+
+            Restaurant currResto = getRestaurant(restoName);
+            if (currResto == null) {
+                System.out.println("Restoran tidak terdaftar pada sistem.\n");
+                continue;
+            }
+
+            restoList.remove(currResto);
+            System.out.println("Restoran berhasil dihapus");
+            break;
+        }
     }
 
     public static void initUser() {
