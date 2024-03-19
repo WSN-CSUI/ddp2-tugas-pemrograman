@@ -22,6 +22,7 @@ public class OrderGenerator {
      * Method ini digunakan untuk membuat bill dari order id dan lokasi
      */
     public static String generateBill(User user, Order order) {
+        String orderStatus = order.isOrderFinished() ? "Finished" : "Not Finished";
         StringBuilder orderedMenu = new StringBuilder();
         double orderedMenuPrice = 0;
 
@@ -33,7 +34,7 @@ public class OrderGenerator {
         return String.format(
                 "Bill:\nOrder ID: %s\nTanggal Pemesanan: %s\nRestaurant: %s\nLokasi Pengiriman: %s\nStatus Pengiriman: %s\nPesanan:\n%sBiaya Ongkos Kirim: Rp%d\nTotal Biaya: Rp%.0f",
                 order.getOrderID(), order.getTanggalPemesanan(), order.getRestaurant().getNama(),
-                user.getLokasi(), order.getOrderFinished(), orderedMenu,
+                user.getLokasi(), orderStatus, orderedMenu,
                 order.getBiayaOngkosKirim(), orderedMenuPrice + order.getBiayaOngkosKirim());
     }
 

@@ -60,14 +60,6 @@ public class Order {
         this.items = items;
     }
 
-    public String getOrderFinished() {
-        if (this.orderFinished) {
-            return "Finished";
-        } else {
-            return "Not Finished";
-        }
-    }
-
     public boolean isOrderFinished() {
         return this.orderFinished;
     }

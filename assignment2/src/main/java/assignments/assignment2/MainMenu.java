@@ -314,14 +314,15 @@ public class MainMenu {
 
             // Mengambil input status dari user
             System.out.print("Status: ");
-            boolean status = input.nextLine().equalsIgnoreCase("selesai");
+            String status = input.nextLine();
+            boolean isStatusFinished = status.equalsIgnoreCase("selesai") || status.equalsIgnoreCase("finished");
 
             // Mengubah status pemesanan, jika status tidak sama dengan status pemesanan sekarang
-            if (currOrder.isOrderFinished() == status) {
+            if (currOrder.isOrderFinished() == isStatusFinished) {
                 System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!\n",
                         currOrder.getOrderID());
             } else {
-                currOrder.setOrderFinished(status);
+                currOrder.setOrderFinished(isStatusFinished);
                 System.out.printf("Status pesanan dengan ID %s berhasil diupdate!\n",
                         currOrder.getOrderID());
             }
