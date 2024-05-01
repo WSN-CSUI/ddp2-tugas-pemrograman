@@ -8,11 +8,13 @@ public class LoginManager {
     private final AdminSystemCLI adminSystem;
     private final CustomerSystemCLI customerSystem;
 
+    // Constructor untuk login manager
     public LoginManager(AdminSystemCLI adminSystem, CustomerSystemCLI customerSystem) {
         this.adminSystem = adminSystem;
         this.customerSystem = customerSystem;
     }
 
+    // Method untuk mendapatkan system berdasarkan role
     public UserSystemCLI getSystem(String role) {
         if (role.equalsIgnoreCase("admin")) {
             return this.adminSystem;

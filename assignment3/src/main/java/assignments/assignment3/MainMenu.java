@@ -117,6 +117,7 @@ public class MainMenu {
                         0));
     }
 
+    // Mendapatkan user berdasarkan nama dan nomor telepon
     public static User getUser(String nama, String nomorTelepon) {
         for (User user : userList) {
             if (user.getNama().equals(nama.trim())
@@ -127,6 +128,7 @@ public class MainMenu {
         return null;
     }
 
+    // Menjalankan program
     public void run() {
         initUser();
         printHeader();
@@ -145,6 +147,7 @@ public class MainMenu {
         input.close();
     }
 
+    // Login dengan nama dan nomor telepon
     private void login() {
         System.out.println("\nSilakan Login:");
         System.out.print("Nama: ");
@@ -153,11 +156,13 @@ public class MainMenu {
         String noTelp = input.nextLine();
 
         userLoggedIn = getUser(nama, noTelp);
+        // Validasi user jika tidak ditemukan
         if (userLoggedIn == null) {
             System.out.println("Pengguna dengan data tersebut tidak ditemukan!");
             return;
         }
 
+        // Menjalankan sistem berdasarkan role user
         UserSystemCLI userSystem = loginManager.getSystem(userLoggedIn.role);
         userSystem.run();
     }

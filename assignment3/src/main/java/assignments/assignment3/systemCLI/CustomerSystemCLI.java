@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CustomerSystemCLI extends UserSystemCLI {
+    // Override method handleMenu di UserSystemCLI
     @Override
     public boolean handleMenu(int choice) {
         switch (choice) {
@@ -34,6 +35,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return true;
     }
 
+    // Override method displayMenu di UserSystemCLI
     @Override
     public void displayMenu() {
         System.out.println("\n--------------------------------------------");
@@ -48,6 +50,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         System.out.print("Pilihan menu: ");
     }
 
+    // Handle buat pesanan sesuai dengan implementasi di TP2
     private void handleBuatPesanan() {
         System.out.println("--------------Buat Pesanan----------------");
         while (true) {
@@ -92,6 +95,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    // Handle cetak bill sesuai dengan implementasi di TP2
     private void handleCetakBill() {
         System.out.println("--------------Cetak Bill----------------");
         while (true) {
@@ -108,6 +112,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    // Handle lihat menu sesuai dengan implementasi di TP2
     private void handleLihatMenu() {
         System.out.println("--------------Lihat Menu----------------");
         while (true) {
@@ -123,30 +128,38 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    // Method yang digunakan untuk membayar sebuah pesanan
     private void handleBayarBill() {
         System.out.println("-------------- Bayar Bill ---------------");
         while (true) {
+            // Mengambil order id dari user
             System.out.print("Masukkan Order ID: ");
             String orderId = input.nextLine().trim();
+            // Mencari order berdasarkan order id
             Order order = getOrderOrNull(orderId);
+            // Validasi order
             if (order == null) {
                 System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
             }
+            // Cek apakah order sudah lunas
             if (order.getOrderFinished()) {
                 System.out.println("Pesanan dengan ID ini sudah lunas");
                 break;
             }
+            // Menampilkan bill pesanan
             System.out.println();
             System.out.print(outputBillPesanan(order));
             System.out.println();
 
+            // Menampilkan opsi pembayaran
             while (true) {
                 System.out.println("Opsi Pembayaran:");
                 System.out.println("1. Credit Card");
                 System.out.println("2. Debit");
                 System.out.print("Pilihan Metode Pembayaran: ");
 
+                // Memilih metode pembayaran dan validasi
                 int choosenPaymentMethod = input.nextInt();
                 input.nextLine();
                 if (choosenPaymentMethod != 1 && choosenPaymentMethod != 2) {
@@ -157,6 +170,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 DepeFoodPaymentSystem userPaymentMethod = userLoggedIn.getPayment();
                 long totalHarga = userPaymentMethod.processPayment((long) order.getTotalHarga());
 
+                // Validasi jika user memiliki metode pembayaran kredit
                 if (userPaymentMethod instanceof CreditCardPayment) {
                     if (choosenPaymentMethod == 2) {
                         System.out.println("User belum memiliki metode pembayaran ini!");
@@ -167,6 +181,8 @@ public class CustomerSystemCLI extends UserSystemCLI {
                             ((CreditCardPayment) userPaymentMethod)
                                     .countTransactionFee((long) order.getTotalHarga());
 
+                    // Jika proses validasi berhasil, maka order dianggap lunas
+                    // dan saldo user akan berkurang
                     order.setOrderFinished(true);
                     userLoggedIn.setSaldo(userLoggedIn.getSaldo() - totalHarga);
                     System.out.printf(
@@ -174,6 +190,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                             totalHarga - transactionFee, transactionFee);
                 }
 
+                // Validasi jika user memiliki metode pembayaran debit
                 if (userPaymentMethod instanceof DebitPayment) {
                     if (choosenPaymentMethod == 1) {
                         System.out.println("User belum memiliki metode pembayaran ini!");
@@ -189,6 +206,8 @@ public class CustomerSystemCLI extends UserSystemCLI {
                                 "Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
                         return;
                     }
+                    // Jika proses validasi berhasil, maka order dianggap lunas
+                    // dan saldo user akan berkurang
                     order.setOrderFinished(true);
                     userLoggedIn.setSaldo(userLoggedIn.getSaldo() - totalHarga);
                     System.out.printf("Berhasil Membayar Bill sebesar Rp %d.", totalHarga);
@@ -198,10 +217,13 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    // Handle cek saldo untuk user yang login
     private void handleCekSaldo() {
         System.out.println("-------------- Cek Saldo ----------------");
         System.out.printf("Sisa saldo sebesar Rp %s%n", userLoggedIn.getSaldo());
     }
+
+    /* Helper Methods */
 
     private Menu[] getMenuRequest(Restaurant restaurant, List<String> listMenuPesananRequest) {
         Menu[] menu = new Menu[listMenuPesananRequest.size()];

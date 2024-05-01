@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AdminSystemCLI extends UserSystemCLI {
+    // Override method handleMenu di UserSystemCLI
     @Override
     public boolean handleMenu(int command) {
         switch (command) {
@@ -21,6 +22,7 @@ public class AdminSystemCLI extends UserSystemCLI {
         return true;
     }
 
+    // Override method displayMenu di UserSystemCLI
     @Override
     public void displayMenu() {
         System.out.println("\n--------------------------------------------");
@@ -32,6 +34,7 @@ public class AdminSystemCLI extends UserSystemCLI {
         System.out.print("Pilihan menu: ");
     }
 
+    // Handle tambah restoran sesuai dengan implementasi di TP2
     private void handleTambahRestoran() {
         System.out.println("---------- Tambah Restoran ----------");
         Restaurant restaurant = null;
@@ -44,6 +47,7 @@ public class AdminSystemCLI extends UserSystemCLI {
         System.out.print("Restaurant " + restaurant.getNama() + " Berhasil terdaftar.");
     }
 
+    // Handle hapus restoran sesuai dengan implementasi di TP2
     private void handleHapusRestoran() {
         System.out.println("---------- Hapus Restoran ----------");
         boolean isActionDeleteEnded = false;
@@ -73,6 +77,8 @@ public class AdminSystemCLI extends UserSystemCLI {
             }
         }
     }
+
+    /* Helper Methods */
 
     private Restaurant handleTambahMenuRestaurant(Restaurant restoran) {
         System.out.print("Jumlah Makanan: ");
