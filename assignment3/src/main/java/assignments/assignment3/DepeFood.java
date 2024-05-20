@@ -1,31 +1,25 @@
 package assignments.assignment3;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-
 import assignments.assignment1.OrderGenerator;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.payment.DepeFoodPaymentSystem;
-import assignments.assignment3.systemCLI.AdminSystemCLI;
-import assignments.assignment3.systemCLI.CustomerSystemCLI;
-import assignments.assignment3.systemCLI.UserSystemCLI;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class DepeFood {
+    private static final List<Restaurant> restoList = new ArrayList<>();
     private static ArrayList<User> userList;
-    private static List<Restaurant> restoList = new ArrayList<>();
     private static User userLoggedIn;
 
     public static User getUserLoggedIn() {
         return userLoggedIn;
     }
 
-    public static String getUserLoggedInRole(){
+    public static String getUserLoggedInRole() {
         return userLoggedIn.getRole();
     }
 
@@ -33,25 +27,76 @@ public class DepeFood {
         userList = new ArrayList<>();
 
         userList.add(
-                new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer", new DebitPayment(), 500000));
-        userList.add(new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer",
-                new CreditCardPayment(), 2000000));
-        userList.add(new User("Sofita Yasusa", "084789607222", "sofita.susa@gmail.com", "T", "Customer",
-                new DebitPayment(), 750000));
-        userList.add(new User("Dekdepe G", "080811236789", "ddp2.gampang@gmail.com", "S", "Customer",
-                new CreditCardPayment(), 1800000));
-        userList.add(new User("Aurora Anum", "087788129043", "a.anum@gmail.com", "U", "Customer", new DebitPayment(),
-                650000));
-
-        userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+                new User(
+                        "Thomas N",
+                        "9928765403",
+                        "thomas.n@gmail.com",
+                        "P",
+                        "Customer",
+                        new DebitPayment(),
+                        500000));
         userList.add(
-                new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+                new User(
+                        "Sekar Andita",
+                        "089877658190",
+                        "dita.sekar@gmail.com",
+                        "B",
+                        "Customer",
+                        new CreditCardPayment(),
+                        2000000));
+        userList.add(
+                new User(
+                        "Sofita Yasusa",
+                        "084789607222",
+                        "sofita.susa@gmail.com",
+                        "T",
+                        "Customer",
+                        new DebitPayment(),
+                        750000));
+        userList.add(
+                new User(
+                        "Dekdepe G",
+                        "080811236789",
+                        "ddp2.gampang@gmail.com",
+                        "S",
+                        "Customer",
+                        new CreditCardPayment(),
+                        1800000));
+        userList.add(
+                new User(
+                        "Aurora Anum",
+                        "087788129043",
+                        "a.anum@gmail.com",
+                        "U",
+                        "Customer",
+                        new DebitPayment(),
+                        650000));
+
+        userList.add(
+                new User(
+                        "Admin",
+                        "123456789",
+                        "admin@gmail.com",
+                        "-",
+                        "Admin",
+                        new CreditCardPayment(),
+                        0));
+        userList.add(
+                new User(
+                        "Admin Baik",
+                        "9123912308",
+                        "admin.b@gmail.com",
+                        "-",
+                        "Admin",
+                        new CreditCardPayment(),
+                        0));
     }
 
     public static User getUser(String nama, String nomorTelepon) {
 
         for (User user : userList) {
-            if (user.getNama().equals(nama.trim()) && user.getNomorTelepon().equals(nomorTelepon.trim())) {
+            if (user.getNama().equals(nama.trim())
+                    && user.getNomorTelepon().equals(nomorTelepon.trim())) {
                 return user;
             }
         }
@@ -84,17 +129,20 @@ public class DepeFood {
     public static String getValidRestaurantName(String inputName) {
         String name = "";
         boolean isRestaurantNameValid = false;
-    
+
         while (!isRestaurantNameValid) {
             System.out.print("Nama: ");
-            boolean isRestaurantExist = restoList.stream()
-                    .anyMatch(restoran -> restoran.getNama().toLowerCase().equals(inputName.toLowerCase()));
+            boolean isRestaurantExist =
+                    restoList.stream()
+                            .anyMatch(restoran -> restoran.getNama().equalsIgnoreCase(inputName));
             boolean isRestaurantNameLengthValid = inputName.length() >= 4;
-    
+
             if (isRestaurantExist) {
-                return String.format("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!", inputName);
+                return String.format(
+                        "Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!",
+                        inputName);
             } else if (!isRestaurantNameLengthValid) {
-               return "Nama Restoran tidak valid! Minimal 4 karakter diperlukan.";
+                return "Nama Restoran tidak valid! Minimal 4 karakter diperlukan.";
             } else {
                 name = inputName;
                 isRestaurantNameValid = true;
@@ -109,10 +157,11 @@ public class DepeFood {
                 return resto;
             }
         }
-        return null; 
+        return null;
     }
-    
-    public static void handleTambahMenuRestoran(Restaurant restoran, String namaMakanan, double harga){
+
+    public static void handleTambahMenuRestoran(
+            Restaurant restoran, String namaMakanan, double harga) {
         restoran.addMenu(new Menu(namaMakanan, harga));
     }
 
@@ -121,40 +170,48 @@ public class DepeFood {
     }
 
     public static Restaurant getRestaurantByName(String name) {
-        Optional<Restaurant> restaurantMatched = restoList.stream()
-                .filter(restoran -> restoran.getNama().equalsIgnoreCase(name)).findFirst();
+        Optional<Restaurant> restaurantMatched =
+                restoList.stream()
+                        .filter(restoran -> restoran.getNama().equalsIgnoreCase(name))
+                        .findFirst();
         if (restaurantMatched.isPresent()) {
             return restaurantMatched.get();
         }
         return null;
     }
 
-    public static String handleBuatPesanan(String namaRestoran, String tanggalPemesanan, int jumlahPesanan, List<String> listMenuPesananRequest) {
+    public static String handleBuatPesanan(
+            String namaRestoran,
+            String tanggalPemesanan,
+            int jumlahPesanan,
+            List<String> listMenuPesananRequest) {
         System.out.println("--------------Buat Pesanan----------------");
-    
+
         Restaurant restaurant = getRestaurantByName(namaRestoran);
         if (restaurant == null) {
             System.out.println("Restoran tidak terdaftar pada sistem.\n");
             return null;
         }
-    
+
         if (!OrderGenerator.validateDate(tanggalPemesanan)) {
             System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)");
             return null;
         }
-    
+
         if (!validateRequestPesanan(restaurant, listMenuPesananRequest)) {
             System.out.println("Mohon memesan menu yang tersedia di Restoran!");
             return null;
         }
-    
-        Order order = new Order(
-                OrderGenerator.generateOrderID(namaRestoran, tanggalPemesanan, userLoggedIn.getNomorTelepon()),
-                tanggalPemesanan,
-                OrderGenerator.calculateDeliveryCost(userLoggedIn.getLokasi()),
-                restaurant,
-                getMenuRequest(restaurant, listMenuPesananRequest));
-    
+
+        Order order =
+                new Order(
+                        OrderGenerator.generateOrderID(
+                                namaRestoran, tanggalPemesanan, userLoggedIn.getNomorTelepon()),
+                        tanggalPemesanan,
+                        OrderGenerator.calculateDeliveryCost(userLoggedIn.getLokasi()),
+                        restaurant,
+                        getMenuRequest(restaurant, listMenuPesananRequest));
+
         System.out.printf("Pesanan dengan ID %s diterima!", order.getOrderId());
         userLoggedIn.addOrderHistory(order);
         return order.getOrderId();
@@ -185,7 +242,8 @@ public class DepeFood {
 
             boolean isCreditCard = paymentSystem instanceof CreditCardPayment;
 
-            if ((isCreditCard && paymentOption.equals("Debit")) || (!isCreditCard && paymentOption.equals("Credit Card"))) {
+            if ((isCreditCard && paymentOption.equals("Debit"))
+                    || (!isCreditCard && paymentOption.equals("Credit Card"))) {
                 System.out.println("User belum memiliki metode pembayaran ini!\n");
                 continue;
             }
@@ -193,7 +251,9 @@ public class DepeFood {
             long amountToPay = 0;
 
             try {
-                amountToPay = paymentSystem.processPayment(userLoggedIn.getSaldo(), (long) order.getTotalHarga());
+                amountToPay =
+                        paymentSystem.processPayment(
+                                userLoggedIn.getSaldo(), (long) order.getTotalHarga());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println();
@@ -210,7 +270,8 @@ public class DepeFood {
             symbols.setGroupingSeparator('.');
             decimalFormat.setDecimalFormatSymbols(symbols);
 
-            System.out.printf("Berhasil Membayar Bill sebesar Rp %s", decimalFormat.format(amountToPay));
+            System.out.printf(
+                    "Berhasil Membayar Bill sebesar Rp %s", decimalFormat.format(amountToPay));
 
             return;
         }
@@ -227,12 +288,17 @@ public class DepeFood {
         return null;
     }
 
-    public static boolean validateRequestPesanan(Restaurant restaurant, List<String> listMenuPesananRequest) {
-        return listMenuPesananRequest.stream().allMatch(
-                pesanan -> restaurant.getMenu().stream().anyMatch(menu -> menu.getNamaMakanan().equals(pesanan)));
+    public static boolean validateRequestPesanan(
+            Restaurant restaurant, List<String> listMenuPesananRequest) {
+        return listMenuPesananRequest.stream()
+                .allMatch(
+                        pesanan ->
+                                restaurant.getMenu().stream()
+                                        .anyMatch(menu -> menu.getNamaMakanan().equals(pesanan)));
     }
 
-    public static Menu[] getMenuRequest(Restaurant restaurant, List<String> listMenuPesananRequest) {
+    public static Menu[] getMenuRequest(
+            Restaurant restaurant, List<String> listMenuPesananRequest) {
         Menu[] menu = new Menu[listMenuPesananRequest.size()];
         for (int i = 0; i < menu.length; i++) {
             for (Menu existMenu : restaurant.getMenu()) {
@@ -246,35 +312,20 @@ public class DepeFood {
 
     public static Order findUserOrderById(String orderId) {
         List<Order> orderHistory = userLoggedIn.getOrderHistory();
-        
+
         for (Order order : orderHistory) {
-            if (order.getOrderId() == orderId) {
-                return order; 
-            }   
+            if (order.getOrderId().equals(orderId)) {
+                return order;
+            }
         }
-        return null; 
+        return null;
     }
 
     public static void handleUpdateStatusPesanan(Order order) {
         order.setOrderFinished(true);
     }
-    
-    public static void setPenggunaLoggedIn(User user){
+
+    public static void setPenggunaLoggedIn(User user) {
         userLoggedIn = user;
     }
-
-
-
-
-    
-
-    
-
-
-
-
-
-
-
-   
 }

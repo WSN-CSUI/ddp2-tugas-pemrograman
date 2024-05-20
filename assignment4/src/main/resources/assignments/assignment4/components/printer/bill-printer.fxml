@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="assignments.assignment4.components.printer.BillPrinterController"
+      alignment="CENTER">
+    <Label>Bill</Label>
+    <Label fx:id="orderId"/>
+    <Label fx:id="orderDate"/>
+    <Label fx:id="restaurantName"/>
+    <Label fx:id="deliveryLocation"/>
+    <Label fx:id="deliveryStatus"/>
+    <Label>Pesanan</Label>
+    <VBox fx:id="listOfOrder" alignment="CENTER"/>
+    <Label fx:id="deliveryCost"/>
+    <Label fx:id="totalCost"/>
+    <Button onAction="#redirectToPrintBill">Kembali</Button>
+</VBox>

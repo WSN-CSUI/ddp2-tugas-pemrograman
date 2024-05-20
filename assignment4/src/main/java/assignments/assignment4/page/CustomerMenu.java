@@ -1,103 +1,195 @@
 package assignments.assignment4.page;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import assignments.assignment1.OrderGenerator;
 import assignments.assignment3.DepeFood;
-import assignments.assignment3.Menu;
+import assignments.assignment3.Order;
 import assignments.assignment3.Restaurant;
 import assignments.assignment3.User;
+import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment4.MainApp;
-import assignments.assignment4.components.BillPrinter;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import assignments.assignment4.components.printer.BillPrinter;
+import assignments.assignment4.page.customer.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
-public class CustomerMenu extends MemberMenu{
-    private Stage stage;
-    private Scene scene;
-    private Scene addOrderScene;
-    private Scene printBillScene;
-    private Scene payBillScene;
-    private Scene cekSaldoScene;
-    private BillPrinter billPrinter; // Instance of BillPrinter
-    private ComboBox<String> restaurantComboBox = new ComboBox<>();
-    private static Label label = new Label();
-    private MainApp mainApp;
-    private List<Restaurant> restoList = new ArrayList<>();
-    private User user;
+public class CustomerMenu extends MemberMenu {
+  private final User user;
+  //  private final Stage stage;
+  //  private final MainApp mainApp;
+  //  private final Scene scene;
+  private final Scene addOrderScene;
+  private final Scene printBillScene;
+  private final Scene payBillScene;
+  private final Scene cekSaldoScene;
+  private final List<Restaurant> restoList;
 
+  public CustomerMenu(Stage stage, MainApp mainApp, User user) {
+    this.stage = stage;
+    this.mainApp = mainApp;
+    this.user = user;
+    this.restoList = DepeFood.getRestoList();
+    this.addOrderScene = createTambahPesananForm();
+    this.printBillScene = createBillPrinter();
+    this.payBillScene = createBayarBillForm();
+    this.cekSaldoScene = createCekSaldoScene();
+    this.scene = createBaseMenu();
+    this.mainApp.addScene("CustomerAddOrder", this.addOrderScene);
+    this.mainApp.addScene("CustomerPrintBill", this.printBillScene);
+    this.mainApp.addScene("CustomerPayBill", this.payBillScene);
+    this.mainApp.addScene("CustomerCekSaldo", this.cekSaldoScene);
+  }
 
-    public CustomerMenu(Stage stage, MainApp mainApp, User user) {
-        this.stage = stage;
-        this.mainApp = mainApp;
-        this.user = user; // Store the user
-        this.scene = createBaseMenu();
-        this.addOrderScene = createTambahPesananForm();
-        this.billPrinter = new BillPrinter(stage, mainApp, this.user); // Pass user to BillPrinter constructor
-        this.printBillScene = createBillPrinter();
-        this.payBillScene = createBayarBillForm();
-        this.cekSaldoScene = createCekSaldoScene();
+  @Override
+  public Scene createBaseMenu() {
+    try {
+      FXMLLoader baseMenuFXML = new FXMLLoader(getClass().getResource("./customer/base.fxml"));
+      baseMenuFXML.setControllerFactory(
+          controller ->
+              new BaseController(
+                  this.stage,
+                  this.mainApp,
+                  this::refresh,
+                  this::createTambahPesananForm,
+                  this::createBillPrinter,
+                  this::createBayarBillForm,
+                  this::createCekSaldoScene));
+      return new Scene(baseMenuFXML.load(), 400, 600);
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private Scene createTambahPesananForm() {
+    try {
+      FXMLLoader addOrderFXML = new FXMLLoader(getClass().getResource("./customer/add-order.fxml"));
+      addOrderFXML.setControllerFactory(
+          controller ->
+              new AddOrderController(
+                  this.stage, this.mainApp, this.restoList, this::handleBuatPesanan));
+      return new Scene(addOrderFXML.load(), 400, 600);
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private Scene createBillPrinter() {
+    try {
+      FXMLLoader createBillFXML = new FXMLLoader(getClass().getResource("./customer/bill.fxml"));
+      createBillFXML.setControllerFactory(
+          controller -> new BillController(this.stage, this.mainApp, this::handleLihatBill));
+      return new Scene(createBillFXML.load(), 400, 600);
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private Scene createBayarBillForm() {
+    try {
+      FXMLLoader paybillFXML = new FXMLLoader(getClass().getResource("./customer/paybill.fxml"));
+      paybillFXML.setControllerFactory(
+          controller -> new PaybillController(this.stage, this.mainApp, this::handleBayarBill));
+      return new Scene(paybillFXML.load(), 400, 600);
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private Scene createCekSaldoScene() {
+    try {
+      FXMLLoader saldoFXML = new FXMLLoader(getClass().getResource("./customer/saldo.fxml"));
+      saldoFXML.setControllerFactory(
+          controller -> new SaldoController(this.stage, this.mainApp, this.user));
+      return new Scene(saldoFXML.load(), 400, 600);
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private void handleBuatPesanan(
+      String namaRestoran, String tanggalPemesanan, List<String> menuItems) {
+    Restaurant restaurant = DepeFood.findRestaurant(namaRestoran);
+    if (restaurant == null) {
+      this.showAlert("Error", null, "Restoran tidak terdaftar pada sistem.", Alert.AlertType.ERROR);
+      return;
+    }
+    if (!OrderGenerator.validateDate(tanggalPemesanan)) {
+      this.showAlert(
+          "Error", null, "Masukkan tanggal sesuai format (DD/MM/YYYY)", Alert.AlertType.ERROR);
+      return;
+    }
+    if (!DepeFood.validateRequestPesanan(restaurant, menuItems)) {
+      this.showAlert(
+          "Error", null, "Mohon memesan menu yang tersedia di Restoran!", Alert.AlertType.ERROR);
+      return;
     }
 
-    @Override
-    public Scene createBaseMenu() {
-        // TODO: Implementasikan method ini untuk menampilkan menu untuk Customer
-        VBox menuLayout = new VBox(10);
+    String orderId =
+        DepeFood.handleBuatPesanan(namaRestoran, tanggalPemesanan, menuItems.size(), menuItems);
+    this.showAlert(
+        "Success",
+        null,
+        String.format("Order dengan ID %s berhasil ditambahkan!", orderId),
+        Alert.AlertType.INFORMATION);
+  }
 
-        return new Scene(menuLayout, 400, 600);
+  private void handleBayarBill(String orderID, String pilihanPembayaran) {
+    Order order = DepeFood.findUserOrderById(orderID);
+
+    if (order == null) {
+      this.showAlert("Error", null, "Order does not exist", Alert.AlertType.ERROR);
+      return;
+    }
+    if (order.getOrderFinished()) {
+      this.showAlert("Error", null, "Order has been paid", Alert.AlertType.ERROR);
+      return;
+    }
+    if (!pilihanPembayaran.equals("Debit") && !pilihanPembayaran.equals("Credit Card")) {
+      this.showAlert("Error", null, "Payment method not available", Alert.AlertType.ERROR);
+      return;
     }
 
-    private Scene createTambahPesananForm() {
-        // TODO: Implementasikan method ini untuk menampilkan page tambah pesanan
-        VBox menuLayout = new VBox(10);
-    
-        return new Scene(menuLayout, 400, 600);
+    boolean isCreditCard = this.user.getPaymentSystem() instanceof CreditCardPayment;
+    if ((isCreditCard && pilihanPembayaran.equals("Debit"))
+        || (!isCreditCard && pilihanPembayaran.equals("Credit Card"))) {
+      this.showAlert(
+          "Error", null, "Payment method not available for this user", Alert.AlertType.ERROR);
+      return;
     }
 
-    private Scene createBillPrinter(){
-        // TODO: Implementasikan method ini untuk menampilkan page cetak bill
-
-        return null;
+    try {
+      this.user
+          .getPaymentSystem()
+          .processPayment(this.user.getSaldo(), (long) order.getTotalHarga());
+    } catch (Exception e) {
+      this.showAlert("Error", null, e.getMessage(), Alert.AlertType.ERROR);
+      return;
     }
 
-    private Scene createBayarBillForm() {
-        // TODO: Implementasikan method ini untuk menampilkan page bayar bill
-        VBox menuLayout = new VBox(10);
+    DepeFood.handleBayarBill(orderID, pilihanPembayaran);
+    this.showAlert("Success", null, "Bill successfully paid", Alert.AlertType.INFORMATION);
+  }
 
-        return new Scene(menuLayout, 400,600);
+  private void handleLihatBill(String orderID) {
+    Order order = DepeFood.findUserOrderById(orderID);
+    if (order == null) {
+      this.showAlert("Error", null, "Order tidak dapat ditemukan", Alert.AlertType.ERROR);
+      return;
     }
-
-
-    private Scene createCekSaldoScene() {
-        // TODO: Implementasikan method ini untuk menampilkan page cetak saldo
-        VBox menuLayout = new VBox(10);
-
-        return new Scene(menuLayout, 400,600);
-    }
-
-    private void handleBuatPesanan(String namaRestoran, String tanggalPemesanan, List<String> menuItems) {
-        //TODO: Implementasi validasi isian pesanan
-        try {
-
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void handleBayarBill(String orderID, int pilihanPembayaran) {
-        //TODO: Implementasi validasi pembayaran
-        try {
-
-        } catch (Exception e) {
-
-        }
-    }
+    Scene billPrinterScene = new BillPrinter(this.stage, this.mainApp, this.user, order).getScene();
+    this.mainApp.addScene("CustomerBillPrinter", billPrinterScene);
+    this.mainApp.setScene(this.mainApp.getScene("CustomerBillPrinter"));
+  }
 }

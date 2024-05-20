@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="assignments.assignment4.page.customer.AddOrderController"
+      alignment="CENTER">
+    <VBox alignment="CENTER">
+        <Label>Restaurant:</Label>
+        <ComboBox fx:id="restaurantName" promptText="Select a restaurant"/>
+    </VBox>
+    <VBox alignment="CENTER">
+        <Label>Date (DD/MM/YYYY):</Label>
+        <TextField fx:id="orderDate" promptText="Enter Date (DD/MM/YYYY)"/>
+    </VBox>
+    <VBox alignment="CENTER">
+        <Button onAction="#handleListMenu">Menu</Button>
+        <VBox alignment="CENTER">
+            <Label>Menu Items:</Label>
+            <ListView fx:id="menuItems">
+            </ListView>
+        </VBox>
+    </VBox>
+    <VBox alignment="CENTER">
+        <Button onAction="#handleAddOrder">Buat Pesanan</Button>
+        <Button onAction="#redirectToBaseMenu">Kembali</Button>
+    </VBox>
+</VBox>

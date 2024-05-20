@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="assignments.assignment4.page.admin.AddRestaurantController"
+      alignment="CENTER">
+    <VBox alignment="CENTER">
+        <Label>Restaurant Name:</Label>
+        <TextField fx:id="restaurantName"/>
+    </VBox>
+    <VBox alignment="CENTER">
+        <Button onAction="#handleAddRestaurant">Add Restaurant</Button>
+        <Button onAction="#redirectToBaseMenu">Kembali</Button>
+    </VBox>
+</VBox>

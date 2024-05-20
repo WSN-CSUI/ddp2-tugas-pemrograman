@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      fx:controller="assignments.assignment4.page.customer.BillController"
+      alignment="CENTER">
+    <VBox alignment="CENTER">
+        <TextField fx:id="orderId"/>
+        <Button onAction="#handlePrintBill">Print Bill</Button>
+    </VBox>
+    <Button onAction="#redirectToBaseMenu" text="Kembali">Kembali</Button>
+</VBox>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="assignments.assignment4.page.customer.BaseController"
+      alignment="CENTER">
+    <Button onAction="#redirectToAddOrder">Buat Pesanan</Button>
+    <Button onAction="#redirectToBill">Cetak Bill</Button>
+    <Button onAction="#redirectToPayBill">Bayar Bill</Button>
+    <Button onAction="#redirectToSaldo">Cetak Saldo</Button>
+    <Button onAction="#logout">Log Out</Button>
+</VBox>
