@@ -33,29 +33,34 @@ public class BaseController {
     this.saldoScene = checkSaldoScene;
   }
 
+  // Event handler untuk logout
   @FXML
   private void logout() {
     this.mainApp.logout();
   }
 
+  // Event handler untuk redirect ke halaman tambah pesanan
   @FXML
   private void redirectToAddOrder() {
     this.refresh.accept("CustomerAddOrder", this.addOrderScene);
     this.mainApp.setScene(this.mainApp.getScene("CustomerAddOrder"));
   }
 
+  // Event handler untuk redirect ke halaman cetak bill
   @FXML
   private void redirectToBill() {
     this.refresh.accept("CustomerPrintBill", this.printBillScene);
     this.mainApp.setScene(this.mainApp.getScene("CustomerPrintBill"));
   }
 
+  // Event handler untuk redirect ke halaman bayar bill
   @FXML
   private void redirectToPayBill() {
     this.refresh.accept("CustomerPayBill", this.payBillScene);
     this.mainApp.setScene(this.mainApp.getScene("CustomerPayBill"));
   }
 
+  // Event handler untuk redirect ke halaman cek saldo
   @FXML
   private void redirectToSaldo() {
     this.refresh.accept("CustomerCekSaldo", this.saldoScene);

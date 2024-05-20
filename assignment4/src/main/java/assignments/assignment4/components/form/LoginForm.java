@@ -23,6 +23,7 @@ public class LoginForm {
     return this.createLoginForm();
   }
 
+  // Method untuk menampilkan form login
   private Scene createLoginForm() {
     try {
       FXMLLoader loginFormFXML = new FXMLLoader(getClass().getResource("./login-form.fxml"));
@@ -35,6 +36,7 @@ public class LoginForm {
     }
   }
 
+  // Method untuk menangani login
   private void handleLogin(String username, String phone) {
     User userLoggedIn = DepeFood.handleLogin(username, phone);
     if (userLoggedIn == null) {

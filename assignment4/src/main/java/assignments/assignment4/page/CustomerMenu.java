@@ -42,6 +42,7 @@ public class CustomerMenu extends MemberMenu {
     this.mainApp.addScene("CustomerCekSaldo", this.cekSaldoScene);
   }
 
+  // Method untuk menampilkan menu utama customer
   @Override
   public Scene createBaseMenu() {
     try {
@@ -64,6 +65,7 @@ public class CustomerMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form penambahan pesanan
   private Scene createTambahPesananForm() {
     try {
       FXMLLoader addOrderFXML = new FXMLLoader(getClass().getResource("./customer/add-order.fxml"));
@@ -79,6 +81,7 @@ public class CustomerMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form printer bill
   private Scene createBillPrinter() {
     try {
       FXMLLoader createBillFXML = new FXMLLoader(getClass().getResource("./customer/bill.fxml"));
@@ -92,6 +95,7 @@ public class CustomerMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form pembayaran bill
   private Scene createBayarBillForm() {
     try {
       FXMLLoader paybillFXML = new FXMLLoader(getClass().getResource("./customer/paybill.fxml"));
@@ -105,6 +109,7 @@ public class CustomerMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form cek saldo
   private Scene createCekSaldoScene() {
     try {
       FXMLLoader saldoFXML = new FXMLLoader(getClass().getResource("./customer/saldo.fxml"));
@@ -118,6 +123,7 @@ public class CustomerMenu extends MemberMenu {
     }
   }
 
+  // Method untuk handle pembuatan pesanan
   private void handleBuatPesanan(
       String namaRestoran, String tanggalPemesanan, List<String> menuItems) {
     Restaurant restaurant = DepeFood.findRestaurant(namaRestoran);
@@ -145,6 +151,7 @@ public class CustomerMenu extends MemberMenu {
         Alert.AlertType.INFORMATION);
   }
 
+  // Method untuk handle pembayaran bill
   private void handleBayarBill(String orderID, String pilihanPembayaran) {
     Order order = DepeFood.findUserOrderById(orderID);
 
@@ -182,6 +189,7 @@ public class CustomerMenu extends MemberMenu {
     this.showAlert("Success", null, "Bill successfully paid", Alert.AlertType.INFORMATION);
   }
 
+  // Method untuk handle lihat bill
   private void handleLihatBill(String orderID) {
     Order order = DepeFood.findUserOrderById(orderID);
     if (order == null) {

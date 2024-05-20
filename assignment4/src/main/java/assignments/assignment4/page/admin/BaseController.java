@@ -30,11 +30,13 @@ public class BaseController {
     this.viewRestaurantScene = viewRestaurantScene;
   }
 
+  // Event handler untuk logout
   @FXML
   private void logout() {
     this.mainApp.logout();
   }
 
+  // Event handler untuk redirect ke halaman tambah restoran
   @FXML
   private void redirectToAddRestaurant() {
     this.refresh.accept("AdminAddRestaurant", this.addRestaurantScene);
@@ -42,6 +44,7 @@ public class BaseController {
     //    this.mainApp.setScene(this.addRestaurantScene);
   }
 
+  // Event handler untuk redirect ke halaman tambah menu
   @FXML
   private void redirectToAddMenu() {
     this.refresh.accept("AdminAddMenu", this.addMenuScene);
@@ -49,6 +52,7 @@ public class BaseController {
     //    this.mainApp.setScene(this.addMenuScene);
   }
 
+  // Event handler untuk redirect ke halaman lihat restoran
   @FXML
   private void redirectToRestaurant() {
     this.refresh.accept("AdminViewRestaurant", this.viewRestaurantScene);

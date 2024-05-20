@@ -33,12 +33,14 @@ public class RestaurantController {
     alert.showAndWait();
   }
 
+  // Event handler untuk redirect ke halaman utama admin
   @FXML
   private void redirectToBaseMenu() {
     Scene baseMenu = this.mainApp.getScene("Admin");
     this.mainApp.setScene(baseMenu);
   }
 
+  // Event handler untuk melihat menu restoran
   @FXML
   private void handleViewRestaurant() {
     String restaurantName = this.restaurantName.getText();

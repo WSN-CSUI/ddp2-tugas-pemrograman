@@ -48,12 +48,14 @@ public class AddOrderController {
     this.menuItems.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
   }
 
+  // Event handler untuk redirect ke halaman utama customer
   @FXML
   private void redirectToBaseMenu() {
     Scene baseMenu = this.mainApp.getScene("Customer");
     this.mainApp.setScene(baseMenu);
   }
 
+  // Event handler untuk melihat menu restoran
   @FXML
   private void handleListMenu() {
     String restaurantName = this.restaurantName.getValue();
@@ -62,6 +64,7 @@ public class AddOrderController {
     this.menuItems.setItems(FXCollections.observableArrayList(menuItems));
   }
 
+  // Event handler untuk menambahkan order
   @FXML
   private void handleAddOrder() {
     String restaurantName = this.restaurantName.getValue();

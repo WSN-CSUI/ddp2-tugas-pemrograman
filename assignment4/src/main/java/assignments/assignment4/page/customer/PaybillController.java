@@ -31,12 +31,14 @@ public class PaybillController {
     alert.showAndWait();
   }
 
+  // Event handler untuk redirect ke halaman utama customer
   @FXML
   private void redirectToBaseMenu() {
     Scene baseMenu = this.mainApp.getScene("Customer");
     this.mainApp.setScene(baseMenu);
   }
 
+  // Event handler untuk membayar bill
   @FXML
   private void handlePaybill() {
     String orderId = this.orderId.getText();

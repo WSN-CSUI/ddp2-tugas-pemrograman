@@ -38,6 +38,7 @@ public class AdminMenu extends MemberMenu {
     this.mainApp.addScene("AdminViewRestaurant", this.viewRestaurantsScene);
   }
 
+  // Method untuk menampilkan menu utama admin
   @Override
   public Scene createBaseMenu() {
     try {
@@ -59,6 +60,7 @@ public class AdminMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form tambah restoran
   private Scene createAddRestaurantForm() {
     try {
       FXMLLoader addRestaurantFXML =
@@ -74,6 +76,7 @@ public class AdminMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form tambah menu
   private Scene createAddMenuForm() {
     try {
       FXMLLoader addMenuFXML = new FXMLLoader(getClass().getResource("./admin/add-menu.fxml"));
@@ -88,6 +91,7 @@ public class AdminMenu extends MemberMenu {
     }
   }
 
+  // Method untuk menampilkan form lihat restoran
   private Scene createViewRestaurantsForm() {
     try {
       FXMLLoader viewRestaurantFXML =
@@ -103,6 +107,7 @@ public class AdminMenu extends MemberMenu {
     }
   }
 
+  // Method untuk handle penambahan restoran
   private void handleTambahRestoran(String nama) {
     String validRestoName = DepeFood.getValidRestaurantName(nama);
     if (!validRestoName.equalsIgnoreCase(nama)) {
@@ -114,6 +119,7 @@ public class AdminMenu extends MemberMenu {
         "Success", null, "Restaurant Successfully Registered", Alert.AlertType.INFORMATION);
   }
 
+  // Method untuk handle penambahan menu restoran
   private void handleTambahMenuRestoran(Restaurant restaurant, String itemName, double price) {
     if (restaurant == null) {
       this.showAlert("Error", null, "Restaurant Not Found", Alert.AlertType.ERROR);
@@ -134,6 +140,7 @@ public class AdminMenu extends MemberMenu {
     this.showAlert("Success", null, "Menu Item Added Successfully!", Alert.AlertType.INFORMATION);
   }
 
+  // Method untuk handle lihat restaurant
   private List<String> handleLihatRestaurant(String restaurantName) {
     Restaurant restaurant = DepeFood.findRestaurant(restaurantName);
     if (restaurant == null) {

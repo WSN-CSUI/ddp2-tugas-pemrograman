@@ -26,6 +26,7 @@ public class SaldoController {
     this.saldoAmount.setText(String.valueOf(currentUser.getSaldo()));
   }
 
+  // Event handler untuk redirect ke halaman utama customer
   @FXML
   private void redirectToBaseMenu() {
     Scene baseMenu = this.mainApp.getScene("Customer");
