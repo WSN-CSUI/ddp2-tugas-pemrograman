@@ -46,7 +46,7 @@ public class BillPrinterController {
     this.deliveryStatus.setText(
         "Status Pengiriman: " + (this.order.getOrderFinished() ? "Finished" : "Not Finished"));
     for (Menu item : this.order.getItems()) {
-      Label itemName = new Label(String.format("%s %f", item.getNamaMakanan(), item.getHarga()));
+      Label itemName = new Label(String.format("%s %.0f", item.getNamaMakanan(), item.getHarga()));
       this.listOfOrder.getChildren().add(itemName);
     }
     this.deliveryCost.setText("Biaya Ongkos Kirim: " + this.order.getOngkir());

@@ -37,6 +37,11 @@ public class BillController {
   @FXML
   private void handlePrintBill() {
     String orderId = this.orderId.getText();
+    if (orderId.isEmpty()) {
+      this.showAlert(
+          "Error", "Order ID is empty", "Please fill the order ID", Alert.AlertType.ERROR);
+      return;
+    }
     this.onPrintBillhandler.accept(orderId);
   }
 }

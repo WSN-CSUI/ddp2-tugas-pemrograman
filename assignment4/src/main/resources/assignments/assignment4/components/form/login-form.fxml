@@ -9,7 +9,9 @@
     <Label
             GridPane.rowIndex="0"
             GridPane.columnIndex="0"
-            GridPane.columnSpan="2">
+            GridPane.columnSpan="2"
+            style="-fx-font-size: 20; -fx-font-weight: bold;"
+            alignment="CENTER">
         Welcome to DepeFood
     </Label>
     <Label

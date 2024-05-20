@@ -67,6 +67,23 @@ public class AddOrderController {
     String restaurantName = this.restaurantName.getValue();
     String orderDate = this.orderDate.getText();
     List<String> orderMenu = this.menuItems.getSelectionModel().getSelectedItems();
-    this.onAddOrderHandler.accept(restaurantName, orderDate, orderMenu);
+    if (restaurantName == null) {
+      this.showAlert(
+          "Error",
+          "Restaurant Name is empty",
+          "Please choose the restaurant name",
+          Alert.AlertType.ERROR);
+    }
+    if (orderDate.isEmpty()) {
+      this.showAlert(
+          "Error", "Order Date is empty", "Please fill the order date", Alert.AlertType.ERROR);
+    }
+    if (orderMenu.isEmpty()) {
+      this.showAlert(
+          "Error", "Order Menu is empty", "Please choose the order menu", Alert.AlertType.ERROR);
+    }
+    if (restaurantName != null && !orderDate.isEmpty() && !orderMenu.isEmpty()) {
+      this.onAddOrderHandler.accept(restaurantName, orderDate, orderMenu);
+    }
   }
 }

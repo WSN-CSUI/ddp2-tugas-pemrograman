@@ -41,6 +41,19 @@ public class PaybillController {
   private void handlePaybill() {
     String orderId = this.orderId.getText();
     String paymentMethod = this.paymentMethod.getValue();
-    this.onPaybillHandler.accept(orderId, paymentMethod);
+    if (orderId.isEmpty()) {
+      this.showAlert(
+          "Error", "Order ID is empty", "Please fill the order ID", Alert.AlertType.ERROR);
+    }
+    if (paymentMethod == null) {
+      this.showAlert(
+          "Error",
+          "Payment Method is empty",
+          "Please choose the payment method",
+          Alert.AlertType.ERROR);
+    }
+    if (!orderId.isEmpty() && paymentMethod != null) {
+      this.onPaybillHandler.accept(orderId, paymentMethod);
+    }
   }
 }
