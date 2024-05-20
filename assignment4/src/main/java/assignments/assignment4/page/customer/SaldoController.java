@@ -23,7 +23,7 @@ public class SaldoController {
   @FXML
   private void initialize() {
     this.username.setText(currentUser.getNama());
-    this.saldoAmount.setText(String.valueOf(currentUser.getSaldo()));
+    this.saldoAmount.setText("Saldo: Rp." + currentUser.getSaldo());
   }
 
   // Event handler untuk redirect ke halaman utama customer

@@ -186,7 +186,11 @@ public class CustomerMenu extends MemberMenu {
     }
 
     DepeFood.handleBayarBill(orderID, pilihanPembayaran);
-    this.showAlert("Success", null, "Bill successfully paid", Alert.AlertType.INFORMATION);
+    this.showAlert(
+        "Success",
+        null,
+        String.format("Berhasil membayar bill sebesar Rp%.0f", order.getTotalHarga()),
+        Alert.AlertType.INFORMATION);
   }
 
   // Method untuk handle lihat bill
