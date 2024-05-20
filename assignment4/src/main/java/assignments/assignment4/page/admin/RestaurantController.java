@@ -54,6 +54,7 @@ public class RestaurantController {
     }
 
     List<String> menuItems = this.onViewRestaurantHandler.apply(restaurantName);
-    this.menuItems.setItems(FXCollections.observableArrayList(menuItems));
+    this.menuItems.setItems(
+        menuItems == null ? null : FXCollections.observableArrayList(menuItems));
   }
 }
